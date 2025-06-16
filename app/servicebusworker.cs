@@ -2,13 +2,17 @@ using Azure.Messaging.ServiceBus;
 
 public class ServiceBusWorker(IConfiguration config, ILogger<ServiceBusWorker> logger) : BackgroundService
 {
-    private readonly string _connectionString = config["SERVICE_BUS_CONNECTION_STRING"];
-    private readonly string _queueName = config["ServiceBus:Queue"];
+    private readonly string _connectionString = Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING");
+    private readonly string _queueName = "kedaqueue";
     private ServiceBusProcessor _processor;
     private ServiceBusClient _client;
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
+        logger.LogInformation("Service Bus processor starting...");
+        logger.LogInformation($"Using connection string: {_connectionString}");
+        logger.LogInformation($"Using queue name: {_queueName}");
+
         _client = new ServiceBusClient(_connectionString);
 
         _processor = _client.CreateProcessor(_queueName, new ServiceBusProcessorOptions());

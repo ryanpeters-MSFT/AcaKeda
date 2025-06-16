@@ -1,5 +1,5 @@
 # Define the URL for the curl request.
-$url = "https://aca-web-keda.blackforest-2c32ce68.eastus2.azurecontainerapps.io"  # <-- Change this to your target URL.
+$url = "https://aca-web-keda.blackforest-2c32ce68.eastus2.azurecontainerapps.io/longrunning"
 
 # Loop to start 5 parallel jobs.
 for ($i = 1; $i -le 5; $i++) {
