@@ -51,6 +51,30 @@ az containerapp update `
     --scale-rule-auth "connection=queueconnection"
 ```
 
+### MSSQL
+
+Create a MSSQL database (either in a container app or using Azure SQL) along with a sample SQL table to be used as a databae query for a KEDA trigger.
+
+```powershell
+# add MSSQL scale trigger to container app
+az containerapp update `
+    -n aca-web-keda -g rg-aca-keda `
+    --min-replicas 1 `
+    --max-replicas 5 `
+    --set-env-vars MSSQL_PASSWORD=secretref:mssqlpassword `
+    --scale-rule-name mssql-rule `
+    --scale-rule-type mssql `
+    --scale-rule-metadata "host=kedaacademo.database.windows.net" `
+                        "username=ryan" `
+                        "passwordFromEnv=MSSQL_PASSWORD" `
+                        "port=1433" `
+                        "database=clientdb" `
+                        "query=select count(*) from orders" `
+                        "targetValue=2"
+```
+
+
+
 ## Handy Commands
 
 ```powershell
