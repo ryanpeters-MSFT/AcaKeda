@@ -1,0 +1,6 @@
+@KedaApp_HostAddress = http://localhost:5233
+
+GET {{KedaApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

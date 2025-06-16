@@ -1,0 +1,1 @@
+az acr build --registry binarydadkeda --image webkeda:latest --file .\Dockerfile .
