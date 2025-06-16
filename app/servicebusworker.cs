@@ -2,7 +2,7 @@ using Azure.Messaging.ServiceBus;
 
 public class ServiceBusWorker(IConfiguration config, ILogger<ServiceBusWorker> logger) : BackgroundService
 {
-    private readonly string _connectionString = Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING");
+    private readonly string _connectionString = config.GetConnectionString("ServiceBus");
     private readonly string _queueName = "kedaqueue";
     private ServiceBusProcessor _processor;
     private ServiceBusClient _client;

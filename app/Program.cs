@@ -2,16 +2,15 @@ using Azure.Messaging.ServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var serviceBusConnectionString = Environment.GetEnvironmentVariable("SERVICE_BUS_CONNECTION_STRING");
-
-Console.WriteLine($"SERVICE_BUS_CONNECTION_STRING = {serviceBusConnectionString}");
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddControllers();
 
 builder.Services.AddSingleton(sp =>
 {
     var config = sp.GetRequiredService<IConfiguration>();
-    return new ServiceBusClient(serviceBusConnectionString);
+    var connectionString = config.GetConnectionString("ServiceBus");
+    return new ServiceBusClient(connectionString);
 });
 
 builder.Services.AddHostedService<ServiceBusWorker>();

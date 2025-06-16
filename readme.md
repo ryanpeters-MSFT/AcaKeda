@@ -28,14 +28,21 @@ If you don't have an existing queue, create one below.
 .\servicequeue.ps1
 ```
 
-Next, create a service queue scaler. When the amount of messages in a queue exceeds a threshold, more replicas are added.
+Next, create a secret and service queue scaler (referencing the secret). When the amount of messages in a queue exceeds a threshold, more replicas are added.
 
 ```powershell
+# create a secret
+az containerapp secret set `
+  -n aca-web-keda `
+  -g rg-aca-keda `
+  --secrets "queueconnection=MY_SERVICE_BUS_CONNECTION_STRING"
+
 # add service queue scale trigger to container app
 az containerapp update `
     -n aca-web-keda -g rg-aca-keda `
     --min-replicas 1 `
     --max-replicas 5 `
+    --set-env-vars ConnectionStrings__ServiceBus=secretref:queueconnection `
     --scale-rule-name azure-service-bus-rule `
     --scale-rule-type azure-servicebus `
     --scale-rule-metadata "queueName=kedaqueue" `
