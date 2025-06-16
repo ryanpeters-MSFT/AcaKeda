@@ -1,14 +1,5 @@
 # Azure Container Apps - KEDA
 
-## Handy Commands
-
-```powershell
-# get the app information
-az containerapp show -n aca-web-keda -g rg-aca-keda | code -
-
-# redeploy the app
-```
-
 ## Scale Triggers
 
 ### HTTP Requests
@@ -51,6 +42,19 @@ az containerapp update `
                         "namespace=kedaacansrjp" `
                         "queueLength=5" `
     --scale-rule-auth "connection=queueconnection"
+```
+
+## Handy Commands
+
+```powershell
+# restart a revision
+az containerapp revision restart --revision aca-web-keda--0000005 -n aca-web-keda -g rg-aca-keda
+
+# get the container logs
+az containerapp logs show --name aca-web-keda -g rg-aca-keda
+
+# exec into an app replica
+az containerapp exec -n aca-web-keda -g rg-aca-keda --replica aca-web-keda--0000012-84675f98fb-nxnbx
 ```
 
 ## Notes/Observations

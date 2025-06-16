@@ -23,8 +23,6 @@ az containerapp create -n $containerWeb -g $group `
     --target-port $port `
     --ingress 'external'
 
-# update the ingress to use port 8080
-
 # get the fqdn from the external web app
 $webFqdn = az containerapp show -n $containerWeb -g $group --query "properties.configuration.ingress.fqdn" -o tsv
 
