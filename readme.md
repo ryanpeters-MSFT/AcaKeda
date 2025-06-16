@@ -139,9 +139,6 @@ az containerapp revision restart --revision aca-web-keda--0000012 -n aca-web-ked
 # get the container logs
 az containerapp logs show --name aca-web-keda -g rg-aca-keda
 
-# invoke queue url
-curl.exe http://localhost:5233/queuemessage
-
 # debug the app
 az containerapp debug -n aca-web-keda -g rg-aca-keda
 
