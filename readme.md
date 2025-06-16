@@ -27,7 +27,7 @@ KEDA’s integration with Azure Container Apps makes it easy to build scalable, 
 
 ## KEDA Scaler Types
 
-### HTTP Requests
+### [HTTP Requests](https://artifacthub.io/packages/keda-scaler/keda-official-external-scalers/keda-add-ons-http)
 
 The HTTP Requests scaler in KEDA automatically adjusts the number of pods for a deployment based on incoming HTTP traffic, supporting scaling to and from zero. For example, you can set up an `HTTPScaledObject` to scale a deployment named `api-deployment` when the request rate to `www.api.com` exceeds five requests per second. This scaler uses an interceptor to queue and forward HTTP requests, ensuring smooth scaling even when no pods are running.
 
@@ -46,7 +46,7 @@ az containerapp update `
 
 To test the scaling behavior, invoke the [test-http.ps1](./test-http.ps1) file to invoke parallel/concurrent requests to the endpoint. This will cause the amount of replicas to increase from 1 to 5. 
 
-### Service Bus
+### [Service Bus](https://keda.sh/docs/2.17/scalers/azure-service-bus/)
 
 The Azure Service Bus Queue scaler enables KEDA to scale workloads according to the number of messages in an Azure Service Bus queue. For instance, you can configure KEDA to increase pod count when the queue length for `orders-queue` surpasses 100 messages, ensuring timely processing of queued tasks. The configuration typically includes the queue name and connection string.
 
@@ -82,7 +82,7 @@ az containerapp update `
 
 To test the scaling behavior, invoke the [test-queue.ps1](./test-queue.ps1) file to create a high-volume of queue messages, triggering a scale-up of the replicas.
 
-### MSSQL
+### [MSSQL](https://keda.sh/docs/2.17/scalers/mssql/)
 
 The MSSQL scaler allows KEDA to scale deployments based on the result of a custom SQL query against a Microsoft SQL Server database. For example, you might scale up a worker deployment if a query like `SELECT COUNT(*) FROM jobs WHERE status='pending'` returns a value above 50. This approach is useful when application workload is directly tied to database state.
 
@@ -106,26 +106,22 @@ az containerapp update `
                         "targetValue=2"
 ```
 
-### CRON
+### [Cron](https://keda.sh/docs/2.17/scalers/cron/)
 
 The Cron scaler lets you define time-based scaling schedules for your workloads. For example, you can set a rule to scale up a deployment to five replicas every weekday at 8:00 AM and scale it back down at 6:00 PM. This is ideal for predictable workloads that fluctuate based on business hours or scheduled tasks.
 
 ```powershell
-# add MSSQL scale trigger to container app
+# add CRON scale trigger to container app given a start and end time period
 az containerapp update `
     -n aca-web-keda -g rg-aca-keda `
     --min-replicas 1 `
     --max-replicas 5 `
-    --set-env-vars MSSQL_PASSWORD=secretref:mssqlpassword `
-    --scale-rule-name mssql-rule `
-    --scale-rule-type mssql `
-    --scale-rule-metadata "host=kedaacademo.database.windows.net" `
-                        "username=ryan" `
-                        "passwordFromEnv=MSSQL_PASSWORD" `
-                        "port=1433" `
-                        "database=clientdb" `
-                        "query=select count(*) from orders" `
-                        "targetValue=2"
+    --scale-rule-name cron-rule `
+    --scale-rule-type cron `
+    --scale-rule-metadata "timezone=America/New_York" `
+                        "start=38 * * * *" `
+                        "end=40 * * * *" `
+                        "desiredReplicas=5"
 ```
 
 ## Handy Commands
