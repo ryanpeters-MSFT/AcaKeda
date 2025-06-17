@@ -1,13 +1,14 @@
 using Azure.Messaging.ServiceBus;
+using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KedaApp.Controllers;
 
 [ApiController]
 [Route("/")]
-public class KedaController(ILogger<KedaController> logger, IConfiguration config, ServiceBusClient serviceBusClient) : ControllerBase
+public class KedaController(ILogger<KedaController> logger, IConfiguration config, ServiceBusClient serviceBusClient, QueueClient queueClient) : ControllerBase
 {
-    private readonly string _queueName = config["ServiceBus:Queue"];
+    private readonly string _queueName = config["ServiceBusName"];
 
     [HttpGet, Route("longrunning")]
     public async Task<ContentResult> LongRunning()
@@ -18,8 +19,8 @@ public class KedaController(ILogger<KedaController> logger, IConfiguration confi
         return Content("Long-running operation completed successfully.");
     }
 
-    [HttpGet, Route("queuemessage")]
-    public async Task<ContentResult> QueueMessage()
+    [HttpGet, Route("servicebusmessage")]
+    public async Task<ContentResult> ServiceBusMessage()
     {
         // Create a sender for the queue
         ServiceBusSender sender = serviceBusClient.CreateSender(_queueName);
@@ -33,6 +34,18 @@ public class KedaController(ILogger<KedaController> logger, IConfiguration confi
         // Optionally, dispose the sender
         await sender.DisposeAsync();
 
-        return Content("Message sent to queue");
+        return Content("Message sent to service bus queue");
+    }
+
+    [HttpGet, Route("storagequeuemessage")]
+    public async Task<ContentResult> StorageQueueMessage()
+    {
+        // Create a sender for the queue
+        ServiceBusSender sender = serviceBusClient.CreateSender(_queueName);
+
+        // Create a message to send
+        var response = await queueClient.SendMessageAsync("Hello, Azure Queue!");
+       
+        return Content("Message sent to storage queue");
     }
 }

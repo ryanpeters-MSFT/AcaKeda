@@ -1,21 +1,17 @@
 using Azure.Messaging.ServiceBus;
 
-public class ServiceBusWorker(IConfiguration config, ILogger<ServiceBusWorker> logger) : BackgroundService
+public class ServiceBusWorker(IConfiguration config, ILogger<ServiceBusWorker> logger, ServiceBusClient serviceBusClient) : BackgroundService
 {
-    private readonly string _connectionString = config.GetConnectionString("ServiceBus");
-    private readonly string _queueName = "kedaqueue";
+    private readonly string _queueName = config["ServiceBusName"];
     private ServiceBusProcessor _processor;
-    private ServiceBusClient _client;
-
+    
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Service Bus processor starting...");
-        logger.LogInformation($"Using connection string: {_connectionString}");
         logger.LogInformation($"Using queue name: {_queueName}");
 
-        _client = new ServiceBusClient(_connectionString);
+        _processor = serviceBusClient.CreateProcessor(_queueName, new ServiceBusProcessorOptions());
 
-        _processor = _client.CreateProcessor(_queueName, new ServiceBusProcessorOptions());
         _processor.ProcessMessageAsync += MessageHandler;
         _processor.ProcessErrorAsync += ErrorHandler;
 
@@ -39,9 +35,9 @@ public class ServiceBusWorker(IConfiguration config, ILogger<ServiceBusWorker> l
             await _processor.StopProcessingAsync(cancellationToken);
             await _processor.DisposeAsync();
         }
-        if (_client != null)
+        if (serviceBusClient != null)
         {
-            await _client.DisposeAsync();
+            await serviceBusClient.DisposeAsync();
         }
 
         logger.LogInformation("Service Bus processor stopped.");

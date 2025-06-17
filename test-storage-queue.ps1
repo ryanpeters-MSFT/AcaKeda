@@ -1,4 +1,4 @@
-$Url = "https://aca-web-keda.blackforest-2c32ce68.eastus2.azurecontainerapps.io/queuemessage"
+$Url = "https://aca-web-keda.blackforest-2c32ce68.eastus2.azurecontainerapps.io/storagequeuemessage"
 
 while ($true) {
     try {

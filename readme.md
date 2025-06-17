@@ -80,7 +80,7 @@ az containerapp update `
     --scale-rule-auth "connection=queueconnection"
 ```
 
-To test the scaling behavior, invoke the [test-queue.ps1](./test-queue.ps1) file to create a high-volume of queue messages, triggering a scale-up of the replicas.
+To test the scaling behavior, invoke the [test-service-bus.ps1](./test-service-bus.ps1) file to create a high-volume of queue messages, triggering a scale-up of the replicas.
 
 ### [MSSQL](https://keda.sh/docs/2.17/scalers/mssql/)
 
