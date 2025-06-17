@@ -53,8 +53,8 @@ The Azure Service Bus Queue scaler enables KEDA to scale workloads according to 
 If you don't have an existing queue, create one below.
 
 ```powershell
-# invoke setup to create queue
-.\servicequeue.ps1
+# invoke setup to create bus queue
+.\servicebus.ps1
 ```
 
 Next, create a secret and service queue scaler (referencing the secret). When the amount of messages in a queue exceeds a threshold, more replicas are added.
