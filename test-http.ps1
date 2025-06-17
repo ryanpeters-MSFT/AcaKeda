@@ -21,7 +21,7 @@ for ($i = 1; $i -le 5; $i++) {
                 Write-Error "Job $($jobNumber): Error sending request - $_"
             }
             # Optionally, add a brief delay to prevent overwhelming the target.
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 3
         }
     } -ArgumentList $url, $jobNumber
 }
