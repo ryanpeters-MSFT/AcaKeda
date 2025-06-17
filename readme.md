@@ -46,14 +46,14 @@ az containerapp update `
 
 To test the scaling behavior, invoke the [test-http.ps1](./test-http.ps1) file to invoke parallel/concurrent requests to the endpoint. This will cause the amount of replicas to increase from 1 to 5. 
 
-### [Service Bus](https://keda.sh/docs/2.17/scalers/azure-service-bus/)
+### [Service Bus (Queue)](https://keda.sh/docs/2.17/scalers/azure-service-bus/)
 
 The Azure Service Bus Queue scaler enables KEDA to scale workloads according to the number of messages in an Azure Service Bus queue. For instance, you can configure KEDA to increase pod count when the queue length for `orders-queue` surpasses 100 messages, ensuring timely processing of queued tasks. The configuration typically includes the queue name and connection string.
 
 If you don't have an existing queue, create one below.
 
 ```powershell
-# invoke setup to create bus queue
+# invoke setup to create service bus queue
 .\servicebus.ps1
 ```
 
@@ -81,6 +81,42 @@ az containerapp update `
 ```
 
 To test the scaling behavior, invoke the [test-service-bus.ps1](./test-service-bus.ps1) file to create a high-volume of queue messages, triggering a scale-up of the replicas.
+
+### [Storage Queue](https://keda.sh/docs/2.17/scalers/azure-storage-queue/)
+
+TBD
+
+If you don't have an existing queue, create one below.
+
+```powershell
+# invoke setup to create storage queue
+.\storagequeue.ps1
+```
+
+Next, create a secret and service queue scaler (referencing the secret). When the amount of messages in a queue exceeds a threshold, more replicas are added.
+
+```powershell
+# create a secret
+az containerapp secret set `
+  -n aca-web-keda `
+  -g rg-aca-keda `
+  --secrets "storageconnection=MY_STORAGE_QUEUE_CONNECTION_STRING"
+
+# add service queue scale trigger to container app
+az containerapp update `
+    -n aca-web-keda -g rg-aca-keda `
+    --min-replicas 1 `
+    --max-replicas 5 `
+    --set-env-vars ConnectionStrings__StorageQueue=secretref:storageconnection `
+    --scale-rule-name azure-queue-rule `
+    --scale-rule-type azure-queue `
+    --scale-rule-metadata "queueName=kedastoragequeue" `
+                        "accountName=kedastoragerjp" `
+                        "queueLength=5" `
+    --scale-rule-auth "connection=storageconnection"
+```
+
+To test the scaling behavior, invoke the [test-storage-queue.ps1](./test-storage-queue.ps1) file to create a high-volume of queue messages, triggering a scale-up of the replicas.
 
 ### [MSSQL](https://keda.sh/docs/2.17/scalers/mssql/)
 
