@@ -76,7 +76,7 @@ az containerapp update `
     --scale-rule-type azure-servicebus `
     --scale-rule-metadata "queueName=kedaqueue" `
                         "namespace=kedaacansrjp" `
-                        "queueLength=5" `
+                        "messageCount=5" `
     --scale-rule-auth "connection=queueconnection"
 ```
 
