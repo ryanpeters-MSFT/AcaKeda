@@ -84,7 +84,7 @@ To test the scaling behavior, invoke the [test-service-bus.ps1](./test-service-b
 
 ### [Storage Queue](https://keda.sh/docs/2.17/scalers/azure-storage-queue/)
 
-TBD
+The Azure Storage Queue KEDA scaler lets Azure Container Apps automatically adjust the number of running containers based on the number of messages in a storage queue. For example, you can set it to add more containers as the queue grows and reduce them when the queue is empty. This is useful for workloads like order processing, where demand can spike and drop quickly. It helps save costs while ensuring your app can handle changing workloads efficiently.
 
 If you don't have an existing queue, create one below.
 
