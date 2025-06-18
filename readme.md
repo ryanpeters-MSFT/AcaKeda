@@ -163,6 +163,15 @@ az containerapp update `
 ## Handy Commands
 
 ```powershell
+# create the ACA web app
+az containerapp create -n aca-web-keda -g rg-aca-keda `
+    --min-replicas 1 `
+    --environment aca-env-keda  `
+    --image "myacr.azurecr.io/webkeda:latest" `
+    --registry-server "myacr.azurecr.io" `
+    --target-port 8080 `
+    --ingress 'external'
+
 # list replicas
 az containerapp replica list -n aca-web-keda -g rg-aca-keda -o table
 

@@ -14,7 +14,7 @@ az acr create -n $registry -g $group -l $region --sku Basic
 # create the ACA environment
 az containerapp env create -n $containerEnv -g $group -l $region
 
-# create tha ACA web app
+# create the ACA web app
 az containerapp create -n $containerWeb -g $group `
     --min-replicas 1 `
     --environment $containerEnv `
