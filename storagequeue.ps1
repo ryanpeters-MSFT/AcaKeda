@@ -1,6 +1,6 @@
 . .\vars.ps1
 
-$storageAccount = "kedastoragerjp"
+$storageAccount = "kedastorage1234"
 $queue = "kedastoragequeue"
 
 # create a storage account

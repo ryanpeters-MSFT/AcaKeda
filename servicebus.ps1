@@ -1,6 +1,6 @@
 . .\vars.ps1
 
-$namespace = "kedaacansrjp"
+$namespace = "kedaacans9876"
 $queue = "kedaqueue"
 
 # create the service bus namespace

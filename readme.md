@@ -75,7 +75,7 @@ az containerapp update `
     --scale-rule-name azure-service-bus-rule `
     --scale-rule-type azure-servicebus `
     --scale-rule-metadata "queueName=kedaqueue" `
-                        "namespace=kedaacansrjp" `
+                        "namespace=kedaacans9876" `
                         "messageCount=5" `
     --scale-rule-auth "connection=queueconnection"
 ```
@@ -111,7 +111,7 @@ az containerapp update `
     --scale-rule-name azure-queue-rule `
     --scale-rule-type azure-queue `
     --scale-rule-metadata "queueName=kedastoragequeue" `
-                        "accountName=kedastoragerjp" `
+                        "accountName=kedastorage1234" `
                         "queueLength=5" `
     --scale-rule-auth "connection=storageconnection"
 ```
